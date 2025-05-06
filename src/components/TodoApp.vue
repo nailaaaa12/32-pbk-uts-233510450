@@ -10,6 +10,10 @@ const addActivity = () => {
     newActivity.value = '';
   }
 };
+
+const cancelActivity = (index) => {
+  activities.value.splice(index, 1);
+};
 </script>
 
 <template>
@@ -26,6 +30,7 @@ const addActivity = () => {
 
 <ul class="activity-list">
   <li v-for="(activity, index) in activities" :key="index" class="activity-item">
+    <button @click="cancelActivity(index)" class="delete-button small">Hapus</button>
     <span class="activity-text">{{ activity.text }}</span>
   </li>
 </ul>
