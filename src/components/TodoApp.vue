@@ -18,6 +18,25 @@ const cancelActivity = (index) => {
 const toggleComplete = (index) => {
   activities.value[index].completed = !activities.value[index].completed;
 };
+
+const editingIndex = ref(null);
+const editedText = ref('');
+
+const startEditing = (index) => {
+  editingIndex.value = index;
+  editedText.value = activities.value[index].text;
+};
+
+const saveEdit = (index) => {
+  if (editedText.value.trim()) {
+    activities.value[index].text = editedText.value;
+    editingIndex.value = null;
+  }
+};
+
+const cancelEdit = () => {
+  editingIndex.value = null;
+};
 </script>
 
 <template>
@@ -34,16 +53,39 @@ const toggleComplete = (index) => {
 
 <ul class="activity-list">
   <li v-for="(activity, index) in activities" :key="index" class="activity-item">
-    <button @click="cancelActivity(index)" class="delete-button small">Hapus</button>
     <input type="checkbox" :checked="activity.completed" @change="toggleComplete(index)" />
-    <span class="activity-text">{{ activity.text }}</span>
+
+    <template v-if="editingIndex === index">
+        <input v-model="editedText" class="input-field small" />
+        <button @click="saveEdit(index)" class="add-button small">Simpan</button>
+        <button @click="cancelEdit" class="delete-button small">Batal</button>
+    </template>
+
+    <template v-else>
+        <span class="activity-text">{{ activity.text }}</span>
+        <div class="button-group">
+              <button @click="startEditing(index)" class="add-button small">Edit</button>
+              <button @click="cancelActivity(index)" class="delete-button small">Hapus</button>
+        </div>
+    </template>
   </li>
 </ul>
 </template>
 
 <style scoped>
-.activity-text.completed {
-  text-decoration: line-through;
-  color: #999;
+
+.input-field.small {
+  flex-grow: 1;
+  width: 50%;
+}
+
+.add-button.small, .delete-button.small {
+  padding: 5px 10px;
+  font-size: 0.85rem;
+}
+
+.button-group {
+  display: flex;
+  gap: 5px;
 }
 </style>
