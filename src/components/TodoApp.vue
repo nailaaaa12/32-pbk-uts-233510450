@@ -23,6 +23,12 @@ const addActivity = () => {
   <input v-model="newActivity" class="input-field" placeholder="Tambahkan tanaman baru" />
   <button @click="addActivity" class="add-button">Tambah</button>
 </div>
+
+<ul class="activity-list">
+  <li v-for="(activity, index) in activities" :key="index" class="activity-item">
+    <span class="activity-text">{{ activity.text }}</span>
+  </li>
+</ul>
 </template>
 
 <style scoped>
