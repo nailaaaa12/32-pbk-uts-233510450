@@ -14,6 +14,10 @@ const addActivity = () => {
 const cancelActivity = (index) => {
   activities.value.splice(index, 1);
 };
+
+const toggleComplete = (index) => {
+  activities.value[index].completed = !activities.value[index].completed;
+};
 </script>
 
 <template>
@@ -31,10 +35,15 @@ const cancelActivity = (index) => {
 <ul class="activity-list">
   <li v-for="(activity, index) in activities" :key="index" class="activity-item">
     <button @click="cancelActivity(index)" class="delete-button small">Hapus</button>
+    <input type="checkbox" :checked="activity.completed" @change="toggleComplete(index)" />
     <span class="activity-text">{{ activity.text }}</span>
   </li>
 </ul>
 </template>
 
 <style scoped>
+.activity-text.completed {
+  text-decoration: line-through;
+  color: #999;
+}
 </style>
